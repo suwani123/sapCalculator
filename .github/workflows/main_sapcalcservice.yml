@@ -41,6 +41,10 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
+
+      - name: Echo the working location
+        run: echo ${{ github.workspace }}
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
