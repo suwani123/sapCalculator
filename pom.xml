@@ -13,7 +13,6 @@
 	<artifactId>calulator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>calulator</name>
-	<packaging>war</packaging>
 	<description>App to calculate best VM</description>
 	<properties>
 		<java.version>1.8</java.version>
