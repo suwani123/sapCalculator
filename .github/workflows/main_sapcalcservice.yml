@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,4 +51,7 @@ jobs:
           app-name: 'sapcalcservice'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AF30C421B514490ABC06446A06F59C1B }}
-          package: '*.war'
+          package: '*.jar'
+
+      - name: Run Jar
+        run: java -jar calulator-0.0.1-SNAPSHOT.jar --server.port=80
