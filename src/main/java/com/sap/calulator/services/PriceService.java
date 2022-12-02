@@ -36,7 +36,7 @@ public class PriceService {
 	}
 	
 	
-	public double getVmPrice(String armRegionName, String armSkuName, String priceType,String reservationTerm,double usage) throws Exception {
+	public double getVmPrice(String armRegionName, String armSkuName,String vmName, String priceType,String reservationTerm,double usage) throws Exception {
 		
 		logger.info("SERVICE_LAYER {} {}",armRegionName,armSkuName);
 		StringBuilder buildUrl = new StringBuilder();
@@ -54,18 +54,33 @@ public class PriceService {
 			buildUrl.append(armSkuName);
 			buildUrl.append("'");
 		}
-		if (priceType!=null) {
-			buildUrl.append(" and priceType eq '");
-			buildUrl.append(priceType);
+		if(vmName!=null) {
+			buildUrl.append(" and meterName eq '");
+			//String first = vmName.substring(0,vmName.length() - 2);
+			//String last = vmName.substring(vmName.length() - 2,vmName.length());
+			
+			buildUrl.append(vmName);
 			buildUrl.append("'");
-			if (priceType.equalsIgnoreCase("Reservation")) {
-				buildUrl.append(" and reservationTerm eq '");
-				buildUrl.append(reservationTerm);
-				buildUrl.append("'");
-			}
+		}
+		if (priceType!=null && priceType.equals("PAYG") ) {
+			buildUrl.append(" and priceType eq '");
+			buildUrl.append("Consumption");
+			buildUrl.append("'");		
 			
 		}
+		else {
+			
+			buildUrl.append(" and priceType eq '");
+			buildUrl.append("Reservation");
+			buildUrl.append("'");
+			
+			buildUrl.append(" and reservationTerm eq '");
+			buildUrl.append(reservationTerm);
+			buildUrl.append("'");
+		
+		}
 		String url = buildUrl.toString();
+		//System.out.println("url: " + url);
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -91,7 +106,7 @@ public class PriceService {
 				vmRetailPrice = item.getRetailPrice()* 730;
 				vmRetailPrice = vmRetailPrice * usage;
 			}
-			System.out.println("Retail SKU : "+ armSkuName + " Price : " + vmRetailPrice);
+			//System.out.println("Retail SKU : "+ armSkuName + " Price : " + vmRetailPrice);
 		}
 	    
 		
@@ -137,7 +152,7 @@ public double getHanaStoragePrice(String armRegionName, String meterName) throws
 			
 			vmRetailPrice = item.getRetailPrice();
 			
-			System.out.println("Retail productName : "+ meterName + " Price : " + vmRetailPrice);
+			//System.out.println("Retail productName : "+ meterName + " Price : " + vmRetailPrice);
 		}
 	    
 		
